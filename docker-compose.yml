@@ -18,6 +18,11 @@ services:
       - "5432:5432"
     networks:
       - "backend"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
 
   postgres_seed:
       container_name: postgresseed
@@ -68,3 +73,14 @@ services:
     networks:
       - "backend"
     restart: unless-stopped
+  
+  python_test:
+    image: python
+    volumes: 
+      - ./python_test_vol:/testService
+    command: bash -c "cd testService; ./execute.sh"
+    networks:
+      - "backend"
+    depends_on:
+      postgres_db:
+        condition: service_healthy
