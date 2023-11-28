@@ -34,7 +34,6 @@ services:
       depends_on:
         - "postgres_db"
 
-
   adminer:
     container_name: adminer
     image: adminer
@@ -52,3 +51,20 @@ services:
         - "backend"
     depends_on:
         - "postgres_seed"
+
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - POSTGRES_USER="postgres"
+      - POSTGRES_PASSWORD="1234"
+      - POSTGRES_DB="dvdrental"
+    volumes:
+      - ./mongodb/db:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - "backend"
+    restart: unless-stopped
