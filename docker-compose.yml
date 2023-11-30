@@ -55,12 +55,6 @@ services:
   mongodb:
     image : mongo
     container_name: mongodb
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - POSTGRES_USER="postgres"
-      - POSTGRES_PASSWORD="1234"
-      - POSTGRES_DB="dvdrental"
     volumes:
       - ./mongodb/db:/data/db
     ports:

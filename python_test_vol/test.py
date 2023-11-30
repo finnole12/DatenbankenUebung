@@ -28,3 +28,20 @@ finally:
     if conn is not None:
         conn.close()
         print('Database connection closed')
+
+# mongodb insert test
+from pymongo import MongoClient
+
+client = MongoClient()
+
+hostname = 'mongodb'
+port = 27017  # Default MongoDB port
+
+# Create a MongoClient instance
+client = MongoClient(hostname, port)
+
+db = client['local']
+collection = db['startup_log']
+print('mongodb output test:')
+print(collection.find_one())
+client.close()
