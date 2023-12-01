@@ -4,8 +4,9 @@ from decimal import Decimal
 from bson.decimal128 import Decimal128
 import datetime
 
-# postgres connection 
+
 try:
+    # postgres connection 
     conn = psycopg2.connect(
         host="postgres_db",
         database="dvdrental",
@@ -23,7 +24,7 @@ try:
     print('Mongo_db connection established')
 
     # create database at mongodb (will be created on first document)
-    client.drop_database('dvdrental') # TOOD: what if not exist?
+    client.drop_database('dvdrental')
     db = client['dvdrental']
 
     # for each table
@@ -31,7 +32,6 @@ try:
        WHERE table_schema = 'public'""")
 
     for table in cur.fetchall():
-        print(table)
         tableName = table[0]
 
         # read all entries
@@ -55,7 +55,6 @@ try:
                 else : mongoFormat = val
                     
                 insertObj = { column: mongoFormat }
-                print(row[index])
                 mongoFormatObject.update(insertObj)
 
             # add to list
@@ -67,7 +66,7 @@ try:
         # insert all at mongodb
         collection.insert_many(mongoFormatObjectList)
 
-    print('transfer finished')
+    print('Transfer finished')
 
     # close connections
     cur.close()
