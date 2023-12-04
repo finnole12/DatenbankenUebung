@@ -9,7 +9,7 @@ client = MongoClient(hostname, port)
 print('Mongo_db connection established')
 
 db = client['dvdrental']
-#Aufgabe A
+"""#Aufgabe A
 inventory = db['inventory']
 print(inventory)
 availableFilmsCount = inventory.count_documents(filter={})
@@ -64,6 +64,85 @@ for id in customerIDs:
 customerRentalsList.sort(key=takeSecond,reverse=True)
 
 for i in range(10):
-    print(f"Kunde: {customerRentalsList[i][0]} Anzahl: {customerRentalsList[i][1]}")
+    print(f"Kunde: {customerRentalsList[i][0]} Anzahl: {customerRentalsList[i][1]}")"""
+
+#Aufgabe F
+print("Antwort Aufgabe F:")
+customers = db['customer']
+payments = db['payment']
+aggregatedPayments = payments.aggregate([
+    {
+        "$group": {
+            "_id": "$customer_id",
+            "sum": {
+                "$sum": {"$toDouble": "$amount" }
+            }
+        }
+    },
+    {
+        "$sort" : {
+            "sum": -1
+        }
+    },
+    {
+        "$limit": 10
+    },
+    {
+        "$lookup": {
+            "from": "customer",
+            "localField": "_id",
+            "foreignField": "customer_id",
+            "pipeline": [
+                {
+                    "$lookup": {
+                        "from": "address",
+                        "localField": "address_id",
+                        "foreignField": "address_id",
+                        "pipeline": [{
+                            "$project": {
+                                "_id": 0,
+                                "address": 1,
+                                "address2": 1,
+                                "city_id": 1,
+                                "district": 1,
+                                "phone": 1,
+                                "postal_code": 1
+                            }
+                        }],
+                        "as": "address"
+                    }
+                },
+                {
+                    "$unwind": "$address"
+                },
+                {
+                    "$project": {
+                        "first_name": 1,
+                        "last_name": 1,
+                        "address": 1,
+                        "customer_id": 1,
+                        "_id": 0
+                    }
+                }
+            ],
+            "as": "customer"
+        }
+    },
+    {
+        "$unwind": "$customer"
+    }, 
+    {
+        "$project": {
+            "first_name": "$customer.first_name",
+            "last_name": "$customer.last_name",
+            "address": "$customer.address",
+            "roundedSum": { "$round": ["$sum", 2] },
+            "_id": 0
+        }
+    }
+])
+import pprint
+resultString = list(aggregatedPayments)
+pprint.pprint(resultString)
     
 client.close()
