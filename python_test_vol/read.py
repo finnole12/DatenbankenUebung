@@ -6,7 +6,7 @@ import decimal
 hostname = 'mongodb'
 port = 27017 
 client = MongoClient(hostname, port)
-print('Mongo_db connection established')
+print('Mongo_db connection for reads established')
 
 db = client['dvdrental']
 #Aufgabe A
@@ -66,4 +66,6 @@ customerRentalsList.sort(key=takeSecond,reverse=True)
 for i in range(10):
     print(f"Kunde: {customerRentalsList[i][0]} Anzahl: {customerRentalsList[i][1]}")
     
+
+print("Reads done. Closing connection.")
 client.close()
