@@ -11,7 +11,6 @@ print('Mongo_db connection for reads established')
 db = client['dvdrental']
 #Aufgabe A
 inventory = db['inventory']
-print(inventory)
 availableFilmsCount = inventory.count_documents(filter={})
 print(f"Antwort Aufgabe A: {availableFilmsCount}")
 
@@ -143,6 +142,7 @@ import pprint
 pprint.pprint(list(outputF))
 
 # Aufgabe G
+print("Antwort Aufgabe G:")
 outputG = db.rental.aggregate([
     {
         "$lookup": {
@@ -198,6 +198,7 @@ outputG = db.rental.aggregate([
 pprint.pprint(list(outputG))
 
 #Aufgabe H
+print("Antwort Aufgabe H:")
 outputH = db.rental.aggregate([
     {
         "$lookup": {
@@ -286,6 +287,7 @@ outputH = db.rental.aggregate([
 pprint.pprint(list(outputH))
 
 #Aufgabe I
+print("Antwort Aufgabe I:")
 outputI = db.customer.aggregate([
     {
         "$lookup": {
