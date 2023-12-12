@@ -28,10 +28,12 @@ try:
     db = client['dvdrental']
 
     # for each table
-    cur.execute("""SELECT table_name FROM information_schema.tables
+    cur.execute("""SELECT table_name, table_type FROM information_schema.tables
        WHERE table_schema = 'public'""")
 
     for table in cur.fetchall():
+        if table[1] != 'BASE TABLE':
+            continue;
         tableName = table[0]
 
         # read all entries
