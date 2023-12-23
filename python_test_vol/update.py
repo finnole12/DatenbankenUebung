@@ -10,14 +10,13 @@ print('Mongo_db connection for updates established')
 db = client['dvdrental']
 
 # Aufgabe A
-
 # updating every staff members password
 staff = db['staff']
 staff.update_many({},{"$set":{"password":"newMoreSecurePassword"
                               ,"last_update":datetime.datetime.now()}})
+print("Update Aufgabe A (update.py Zeile 12-17): Staff updated")
 
 # Aufgabe B
-
 # the necessary collections
 addresses = db['address']
 stores = db['store']
@@ -51,6 +50,7 @@ stores.insert_one({"store_id":newStoreID,
 # setting all inventorys store ID to the new stores ID
 inventory.update_many({},{"$set":{"store_id":newStoreID,
                                   "last_update":datetime.datetime.now()}})
+print("Update Aufgabe B (update.py Zeile 19-53): Iventory, Stores, Addresses updated")
 
 print("Updates done. Closing connection")
 client.close()

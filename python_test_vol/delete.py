@@ -8,6 +8,7 @@ print('Mongo_db connection for deletes established')
 
 db = client['dvdrental']
 
+print("Delete Aufgabe A+B (delete.py Zeile 11-33):")
 # the necessary collections
 films = db['film']
 inventory = db['inventory']

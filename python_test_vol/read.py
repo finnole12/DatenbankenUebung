@@ -10,21 +10,22 @@ print('Mongo_db connection for reads established')
 
 db = client['dvdrental']
 #Aufgabe A
+print("Antwort Aufgabe A (read.py Zeile 12-16):")
 inventory = db['inventory']
 availableFilmsCount = inventory.count_documents(filter={})
-print(f"Antwort Aufgabe A: {availableFilmsCount}")
+print(availableFilmsCount)
 
 #Aufgabe B
 stores = db['store']
 storeIDs = stores.distinct("store_id")
-print("Antwort Aufgabe B:")
+print("Antwort Aufgabe B (read.py Zeile 18-25):")
 for id in storeIDs:
     films = inventory.find({"store_id":id})
     distinctFilm = films.distinct("film_id")
     print(f"Store {id}: "+str(len(distinctFilm)))
 
 #Aufgabe C
-print("Antwort Aufgabe C:")
+print("Antwort Aufgabe C (read.py Zeile 27-42):")
 actors = db['actor']
 filmActors = db['film_actor']
 actorIDs = actors.distinct("actor_id")
@@ -36,11 +37,12 @@ for id in actorIDs:
 def takeSecond(elem):
     return(elem[1])
 numberList.sort(key=takeSecond,reverse=True)
+
 for i in range(10):
     print(f"Actor: {numberList[i][0]}, Films: {numberList[i][1]}")
 
 #Aufgabe D
-print("Antwort Aufgabe D:")
+print("Antwort Aufgabe D (read.py Zeile 44-54):")
 staffIDs = db['staff'].distinct("staff_id")
 payments = db['payment']
 d128context = decimal128.create_decimal128_context()
@@ -52,7 +54,7 @@ with decimal.localcontext(d128context):
         print(f"Staff {id}: {totalAmount}")
 
 #Aufgabe E
-print("Antwort Aufgabe E:")
+print("Antwort Aufgabe E (read.py Zeile 56-68):")
 rentals = db['rental']
 customers = db['customer']
 customerIDs = customers.distinct(key="customer_id")
@@ -66,7 +68,7 @@ for i in range(10):
     print(f"Kunde: {customerRentalsList[i][0]} Anzahl: {customerRentalsList[i][1]}")
 
 #Aufgabe F
-print("Antwort Aufgabe F:")
+print("Antwort Aufgabe F (read.py Zeile 70-144):")
 outputF = db.payment.aggregate([
     {
         "$group": {
@@ -142,7 +144,7 @@ import pprint
 pprint.pprint(list(outputF))
 
 # Aufgabe G
-print("Antwort Aufgabe G:")
+print("Antwort Aufgabe G (read.py Zeile 146-200):")
 outputG = db.rental.aggregate([
     {
         "$lookup": {
@@ -198,7 +200,7 @@ outputG = db.rental.aggregate([
 pprint.pprint(list(outputG))
 
 #Aufgabe H
-print("Antwort Aufgabe H:")
+print("Antwort Aufgabe H (read.py Zeile 202-289):")
 outputH = db.rental.aggregate([
     {
         "$lookup": {
@@ -287,7 +289,7 @@ outputH = db.rental.aggregate([
 pprint.pprint(list(outputH))
 
 #Aufgabe I
-print("Antwort Aufgabe I:")
+print("Antwort Aufgabe I (read.py Zeile 291-324):")
 outputI = db.customer.aggregate([
     {
         "$lookup": {
